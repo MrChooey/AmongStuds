@@ -1,0 +1,47 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Client",
+			"type": "npm",
+			"script": "start",
+			"path": "client",
+			"group": { "kind": "build", "isDefault": true },
+			"icon": {
+				"id": "browser",
+				"color": "terminal.ansiBlue"
+			},
+			"presentation": {
+				"panel": "dedicated",
+				"showReuseMessage": false,
+				"clear": false
+			}
+		},
+		{
+			"label": "Start Server",
+			"type": "npm",
+			"script": "dev",
+			"path": "server",
+			"group": "build",
+			"icon": {
+				"id": "server",
+				"color": "terminal.ansiGreen"
+			},
+			"presentation": {
+				"panel": "dedicated",
+				"showReuseMessage": false,
+				"clear": false
+			}
+		},
+		{
+			"label": "Start Fullstack",
+			"dependsOn": ["Start Client", "Start Server"],
+			"icon": {
+				"id": "play",
+				"color": "terminal.ansiYellow"
+			},
+			"problemMatcher": [],
+			"runOptions": { "runOn": "default" }
+		}
+	]
+}
