@@ -7,7 +7,7 @@ A minimalist anonymous forum/chat board built on the MERN stack (MongoDB, Expres
 ```bash
 # Clone repo
 git clone <repo_url>
-cd forum-app
+cd AmongStuds
 
 # Install dependencies
 cd client && npm install
