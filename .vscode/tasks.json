@@ -2,14 +2,14 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Start Client",
+			"label": "Start Client (Vite)",
 			"type": "npm",
-			"script": "start",
+			"script": "dev",
 			"path": "client",
 			"group": { "kind": "build", "isDefault": true },
 			"icon": {
-				"id": "browser",
-				"color": "terminal.ansiBlue"
+				"id": "browser", // 🌐 browser icon
+				"color": "terminal.ansiBlue" // blue accent
 			},
 			"presentation": {
 				"panel": "dedicated",
@@ -24,8 +24,8 @@
 			"path": "server",
 			"group": "build",
 			"icon": {
-				"id": "server",
-				"color": "terminal.ansiGreen"
+				"id": "server", // server icon
+				"color": "terminal.ansiGreen" // green accent
 			},
 			"presentation": {
 				"panel": "dedicated",
@@ -35,13 +35,15 @@
 		},
 		{
 			"label": "Start Fullstack",
-			"dependsOn": ["Start Client", "Start Server"],
+			"dependsOn": ["Start Client (Vite)", "Start Server"],
 			"icon": {
-				"id": "play",
-				"color": "terminal.ansiYellow"
+				"id": "play", // play icon
+				"color": "terminal.ansiYellow" // yellow accent
 			},
 			"problemMatcher": [],
-			"runOptions": { "runOn": "default" }
+			"runOptions": {
+				"runOn": "default"
+			}
 		}
 	]
 }
