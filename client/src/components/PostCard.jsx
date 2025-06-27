@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 export default function PostCard({ post }) {
+
 	return (
 		<Link to={`/post/${post.id}`} className="block">
 			<div className="bg-[#2a2a3c] p-4 rounded shadow-md">

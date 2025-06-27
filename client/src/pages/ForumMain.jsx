@@ -18,8 +18,10 @@ export default function ForumMain() {
 		fetchPosts();
 	}, []);
 
+    console.log("🔍 ForumMain rendered");
+
 	return (
-		<div className="min-h-screen bg-[#1e1e2f] text-white px-4 py-6">
+		<div className="min-h-screen bg-[#1e1e2f] text-white">
 			<ForumHeader />
 			<div className="max-w-3xl mx-auto flex flex-col gap-6">
 				<CreatePost onPostCreated={fetchPosts} />

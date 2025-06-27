@@ -47,7 +47,7 @@ export default function CreatePost({ onPostCreated }) {
 				<button
 					type="submit"
 					disabled={loading}
-					className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
+					className="bg-green-500 hover:bg-green-600 duration-200 text-white px-4 py-2 rounded disabled:opacity-50"
 				>
 					{loading ? "Posting..." : "Create Post"}
 				</button>
