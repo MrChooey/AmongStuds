@@ -55,23 +55,32 @@ export default function PostCard({ post }) {
 		const postRef = doc(db, "posts", post.id);
 		await updateDoc(postRef, { likes: increment(-1) });
 	};
+	
+	const handleReport = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		// Placeholder for future report functionality
+		console.log("Report clicked");
+	};
 
 	const userId = auth.currentUser?.uid;
 	const liked = !!(post.likers && userId && post.likers[userId]);
 
 	return (
 		<Link to={`/post/${post.id}`} className="block">
-			<div className="bg-[#262d34] p-4 rounded shadow-md">
+			<div className="bg-[#262d34] p-5 rounded shadow-md">
 				<div className="text-sm text-gray-400 mb-2">
 					Anonymous {shortId} &nbsp;&nbsp;&nbsp;&nbsp; {formattedDate}
 				</div>
 
-				<h3 className="text-lg font-semibold mb-2">{post.title}</h3>
+				<h3 className="text-lg font-semibold text-white mb-2">
+					{post.title}
+				</h3>
 				<div className="flex gap-2 mb-2">
 					{post.tags?.map((tag, i) => (
 						<span
 							key={i}
-							className="bg-gray-700 text-sm px-2 py-1 rounded-full"
+							className="bg-[#2c353d] text-[#c5d0e6] text-sm px-2 py-1 rounded-full"
 						>
 							{tag}
 						</span>
@@ -80,11 +89,23 @@ export default function PostCard({ post }) {
 				<p className="text-sm text-gray-300">{post.content}</p>
 				<div className="flex justify-between items-center mt-4 text-sm text-gray-400">
 					<div className="flex gap-1">
-						<button onClick={handleLike} className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300">
+						<button
+							onClick={handleLike}
+							className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
+						>
 							{liked ? "👍 Unlike" : "👍 Like"}
 						</button>
-						<button onClick={handleDislike} className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300">
+						<button
+							onClick={handleDislike}
+							className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
+						>
 							👎 Dislike
+						</button>
+						<button
+							onClick={handleReport}
+							className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
+						>
+							🚩 Report
 						</button>
 					</div>
 					<div>
