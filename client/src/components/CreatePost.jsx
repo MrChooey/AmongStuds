@@ -90,7 +90,7 @@ export default function CreatePost({ onPostCreated }) {
 				<input
 					type="text"
 					placeholder="Add tag"
-					className="px-3 py-2 rounded bg-[#2c353d] text-[#858ead]"
+					className="px-3 py-2 rounded bg-[#2c353d] text-[#858ead] focus:outline-none"
 					value={tagInput}
 					onChange={(e) => setTagInput(e.target.value)}
 					onKeyDown={(e) =>

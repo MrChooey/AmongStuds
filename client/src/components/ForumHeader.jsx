@@ -20,11 +20,17 @@ export default function ForumHeader() {
 					AmongStuds
 				</h1>
 			</div>
-			<input
-				type="text"
-				placeholder="Search..."
-				className="bg-[#2c353d] text-white w-2/6 px-4 py-2 rounded w-1/2 mr-20"
-			/>
+			<div className="relative w-3/8 mr-20 text-gray-400 focus-within:text-gray-200">
+				<input
+					type="text"
+					placeholder="Search..."
+					className="w-full bg-[#2c353d] text-white px-4 py-2 rounded focus:outline-none"
+				/>
+				<img
+					src="/search-icon.svg"
+					className="w-5 h-5 absolute inset-y-0 right-3 m-auto pointer-events-none"
+				/>
+			</div>
 			<div className="flex items-center gap-2">
 				{/* <img
 					src="/profile.png"
@@ -33,7 +39,12 @@ export default function ForumHeader() {
 				/> */}
 				<span>Max</span>
 				<span className="mr-5">▼</span>
-				<button onClick={handleLogout}>Logout</button>
+				<button
+					onClick={handleLogout}
+					className="cursor-pointer px-4 py-2 font-semibold text-white bg-gray-700 hover:bg-[#313b4b] duration-200 rounded"
+				>
+					Log out
+				</button>
 			</div>
 		</header>
 	);
