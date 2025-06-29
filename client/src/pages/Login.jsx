@@ -55,7 +55,16 @@ export default function Login() {
 				className="bg-white bg-opacity-90 p-8 rounded shadow-md w-full max-w-md mx-4"
 				style={{ backgroundColor: "#262D34" }}
 			>
-				<h2 className="title font-bold mb-6 text-center">AmongStuds</h2>
+				<div className="flex flex-row items-center justify-center gap-3 mb-6">
+					<img
+						src="/AMONGSTUD_LOGO.png"
+						alt="Logo"
+						className="w-12 h-12"
+					/>
+					<h2 className="title font-bold">
+						AmongStuds
+					</h2>
+				</div>
 				<h2 className="text-2xl text-white font-bold mb-6 text-center">
 					Login
 				</h2>
@@ -76,8 +85,8 @@ export default function Login() {
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
-					<button className="hover:bg-gray-600 w-full p-2">
-						<p className="text-black">Login</p>
+					<button className="bg-gray-300 hover:bg-gray-500 duration-150 rounded w-full p-2 my-5">
+						<p className="text-black font-semibold">LOGIN</p>
 					</button>
 					{message && (
 						<p className="login_btn text-sm text-center text-white">
@@ -87,7 +96,11 @@ export default function Login() {
 				</form>
 				<p className="text-center text-sm text-white mt-4">
 					Don't have an account?{" "}
-					<Link to="/signup" className="text-white hover:underline">
+					<Link
+						to="/signup"
+						className="font-bold text-white hover:underline"
+						style={{ color: "inherit" }}
+					>
 						Sign up
 					</Link>
 				</p>
