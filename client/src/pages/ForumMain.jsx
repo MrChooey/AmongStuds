@@ -2,7 +2,7 @@ import ForumHeader from "../components/ForumHeader.jsx";
 import CreatePost from "../components/CreatePost.jsx";
 import PostCard from "../components/PostCard.jsx";
 import { useState, useEffect } from "react";
-import { collection, getDocs, query, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 
 export default function ForumMain() {

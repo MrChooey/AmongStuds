@@ -78,7 +78,7 @@ export default function Signup() {
 					{message && <p className="text-sm text-white">{message}</p>}
 				</form>
 				<p className="text-center text-sm text-white mt-4">
-					Don't have an account?{" "}
+					Already have an account?{" "}
 					<Link
 						to="/login"
 						c
