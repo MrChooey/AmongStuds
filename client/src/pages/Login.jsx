@@ -61,9 +61,7 @@ export default function Login() {
 						alt="Logo"
 						className="w-12 h-12"
 					/>
-					<h2 className="title font-bold">
-						AmongStuds
-					</h2>
+					<h2 className="title font-bold">AmongStuds</h2>
 				</div>
 				<h2 className="text-2xl text-white font-bold mb-6 text-center">
 					Login
@@ -72,7 +70,7 @@ export default function Login() {
 					<input
 						type="email"
 						placeholder="Email"
-						className="w-full p-2 form-bg"
+						className="w-full px-4 py-2 form-bg"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						required
@@ -80,7 +78,7 @@ export default function Login() {
 					<input
 						type="password"
 						placeholder="Password"
-						className="w-full p-2 form-bg"
+						className="w-full px-4 py-2 form-bg"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						required
