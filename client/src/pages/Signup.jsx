@@ -26,7 +26,7 @@ export default function Signup() {
 			);
 			await setDoc(doc(db, "users", userCred.user.uid), {
 				email,
-				status: "pending",
+				role: 0,
 				createdAt: new Date(),
 			});
 			setMessage("Account created! Awaiting admin approval.");

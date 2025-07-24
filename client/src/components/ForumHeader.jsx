@@ -37,8 +37,8 @@ export default function ForumHeader() {
 					alt="Profile"
 					className="w-8 h-8 rounded-full"
 				/> */}
-				<span>Max</span>
-				<span className="mr-5">▼</span>
+				{/* <span>Max</span>
+				<span className="mr-5">▼</span> */}
 				<button
 					onClick={handleLogout}
 					className="cursor-pointer px-4 py-2 font-semibold text-white bg-gray-700 hover:bg-[#313b4b] duration-200 rounded"

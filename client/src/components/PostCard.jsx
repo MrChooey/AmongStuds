@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
-import { doc, updateDoc, arrayUnion, arrayRemove, increment, runTransaction } from "firebase/firestore";
-import { db } from "../firebase";
-import { auth } from "../firebase";
+import { doc, updateDoc, increment, runTransaction } from "firebase/firestore";
+import { db, auth } from "../firebase";
 
-export default function PostCard({ post }) {
-	const shortId = post.user_id.slice(0, 6);
+export default function PostCard({ post, disableLink = false }) {
+	const shortId = post.user_id?.slice(0, 6) || "Anon";
 
 	const ts = post.createdAt;
 	const date = ts ? ts.toDate() : null;
@@ -17,7 +16,7 @@ export default function PostCard({ post }) {
 				day: "numeric",
 				hour: "numeric",
 				minute: "2-digit",
-		})
+		  })
 		: "";
 
 	// Handle like/dislike
@@ -26,7 +25,7 @@ export default function PostCard({ post }) {
 		e.preventDefault();
 
 		const userId = auth.currentUser?.uid;
-		if (!userId) return; // Optionally handle unauthenticated users
+		if (!userId) return;
 
 		const postRef = doc(db, "posts", post.id);
 
@@ -55,65 +54,73 @@ export default function PostCard({ post }) {
 		const postRef = doc(db, "posts", post.id);
 		await updateDoc(postRef, { likes: increment(-1) });
 	};
-	
+
 	const handleReport = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		// Placeholder for future report functionality
 		console.log("Report clicked");
 	};
 
 	const userId = auth.currentUser?.uid;
 	const liked = !!(post.likers && userId && post.likers[userId]);
 
-	return (
-		<Link to={`/post/${post.id}`} className="block">
-			<div className="bg-[#262d34] p-5 rounded shadow-md">
-				<div className="text-sm text-gray-400 mb-2">
-					Anonymous {shortId} &nbsp;&nbsp;&nbsp;&nbsp; {formattedDate}
-				</div>
+	const CardContent = (
+		<div className="bg-[#262d34] p-5 rounded shadow-md">
+			<div className="text-sm text-gray-400 mb-2">
+				Anonymous {shortId} &nbsp;&nbsp;&nbsp;&nbsp; {formattedDate}
+			</div>
 
-				<h3 className="text-lg font-semibold text-white mb-2">
-					{post.title}
-				</h3>
-				<div className="flex gap-2 mb-2">
-					{post.tags?.map((tag, i) => (
-						<span
-							key={i}
-							className="bg-[#2c353d] text-[#c5d0e6] text-sm px-2 py-1 rounded-full"
-						>
-							{tag}
-						</span>
-					))}
+			<h3 className="text-lg font-semibold text-white mb-2">
+				{post.title}
+			</h3>
+
+			<div className="flex gap-2 mb-2">
+				{post.tags?.map((tag, i) => (
+					<span
+						key={i}
+						className="bg-[#2c353d] text-[#c5d0e6] text-sm px-2 py-1 rounded-full"
+					>
+						{tag}
+					</span>
+				))}
+			</div>
+
+			<p className="text-sm text-gray-300">{post.content}</p>
+
+			<div className="flex justify-between items-center mt-4 text-sm text-gray-400">
+				<div className="flex gap-1">
+					<button
+						onClick={handleLike}
+						className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
+					>
+						{liked ? "👍 Unlike" : "👍 Like"}
+					</button>
+					<button
+						onClick={handleDislike}
+						className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
+					>
+						👎 Dislike
+					</button>
+					<button
+						onClick={handleReport}
+						className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
+					>
+						🚩 Report
+					</button>
 				</div>
-				<p className="text-sm text-gray-300">{post.content}</p>
-				<div className="flex justify-between items-center mt-4 text-sm text-gray-400">
-					<div className="flex gap-1">
-						<button
-							onClick={handleLike}
-							className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
-						>
-							{liked ? "👍 Unlike" : "👍 Like"}
-						</button>
-						<button
-							onClick={handleDislike}
-							className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
-						>
-							👎 Dislike
-						</button>
-						<button
-							onClick={handleReport}
-							className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
-						>
-							🚩 Report
-						</button>
-					</div>
-					<div>
-						{post.likes ?? 0} Likes &nbsp;•&nbsp;{" "}
-						{post.comments?.length ?? 0} comments
-					</div>
+				<div>
+					{post.likes ?? 0} Likes &nbsp;•&nbsp;{" "}
+					{post.commentCount ?? 0} comments
 				</div>
 			</div>
+		</div>
+	);
+
+	return disableLink ? (
+		CardContent
+	) : (
+		<Link to={`/post/${post.id}`} className="block">
+			{CardContent}
 		</Link>
 	);
 }
