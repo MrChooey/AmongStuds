@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
-import { doc, updateDoc, increment, runTransaction } from "firebase/firestore";
+import {
+	doc,
+	updateDoc,
+	increment,
+	runTransaction,
+	deleteDoc,
+} from "firebase/firestore";
 import { db, auth } from "../firebase";
 
-export default function PostCard({ post, disableLink = false }) {
+export default function PostCard({ post, disableLink = false, userRole = 0 }) {
 	const shortId = post.user_id?.slice(0, 6) || "Anon";
 
 	const ts = post.createdAt;
@@ -55,14 +61,41 @@ export default function PostCard({ post, disableLink = false }) {
 		await updateDoc(postRef, { likes: increment(-1) });
 	};
 
-	const handleReport = (e) => {
+	const handleReport = async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		console.log("Report clicked");
+
+		const userId = auth.currentUser?.uid;
+		if (!userId) return;
+
+		const postRef = doc(db, "posts", post.id);
+		await updateDoc(postRef, {
+			[`reporters.${userId}`]: true,
+		});
+		alert("Post reported. Thank you!");
+	};
+
+	const handleDelete = async (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		const confirmDelete = window.confirm(
+			"Are you sure you want to delete this post?"
+		);
+		if (!confirmDelete) return;
+
+		try {
+			await deleteDoc(doc(db, "posts", post.id));
+			console.log("Post deleted successfully.");
+		} catch (err) {
+			console.error("Failed to delete post:", err);
+		}
 	};
 
 	const userId = auth.currentUser?.uid;
 	const liked = !!(post.likers && userId && post.likers[userId]);
+	const isAdmin = userRole === 1;
+	const canDelete = isAdmin;
 
 	const CardContent = (
 		<div className="bg-[#262d34] p-5 rounded shadow-md">
@@ -101,12 +134,21 @@ export default function PostCard({ post, disableLink = false }) {
 					>
 						👎 Dislike
 					</button>
-					<button
-						onClick={handleReport}
-						className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
-					>
-						🚩 Report
-					</button>
+					{canDelete ? (
+						<button
+							onClick={handleDelete}
+							className="cursor-pointer px-2 py-1 rounded hover:bg-red-600 text-red-400 duration-300"
+						>
+							🗑 Delete
+						</button>
+					) : (
+						<button
+							onClick={handleReport}
+							className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
+						>
+							🚩 Report
+						</button>
+					)}
 				</div>
 				<div>
 					{post.likes ?? 0} Likes &nbsp;•&nbsp;{" "}

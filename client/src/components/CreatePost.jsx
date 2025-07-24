@@ -34,6 +34,7 @@ export default function CreatePost({ onPostCreated }) {
 				likes: 0,
 				comments: [],
 				user_id: currentUser.uid,
+				reporters: {},
 			});
 			setTitle("");
 			setContent("");

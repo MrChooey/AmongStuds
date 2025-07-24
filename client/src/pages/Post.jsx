@@ -21,6 +21,7 @@ export default function PostDetail() {
 	const [post, setPost] = useState(null);
 	const [comments, setComments] = useState([]);
 	const [newComment, setNewComment] = useState("");
+	const [userRole, setUserRole] = useState(0);
 
 	useEffect(() => {
 		const postRef = doc(db, "posts", id);
@@ -38,6 +39,24 @@ export default function PostDetail() {
 				snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 			);
 		});
+
+		const fetchUserRole = async () => {
+			const user = auth.currentUser;
+			if (!user) return;
+
+			try {
+				const docRef = doc(db, "users", user.uid);
+				const docSnap = await getDoc(docRef);
+				if (docSnap.exists()) {
+					const data = docSnap.data();
+					setUserRole(data.role || 0);
+				}
+			} catch (err) {
+				console.error("Failed to fetch user role:", err);
+			}
+		};
+
+		fetchUserRole();
 
 		return () => {
 			unsubscribePost();
@@ -78,7 +97,7 @@ export default function PostDetail() {
 
 			{/* Reused PostCard without link */}
 			<div className="max-w-3xl mx-auto my-6">
-				<PostCard post={post} disableLink />
+				<PostCard post={post} userRole={userRole} disableLink />
 			</div>
 
 			{/* Centered Content Container */}
