@@ -21,7 +21,7 @@ export default function ForumHeader() {
 				</h1>
 			</div>
 			<div className="relative w-3/8 mr-20 text-gray-400 focus-within:text-gray-200">
-				<input
+				{/* <input
 					type="text"
 					placeholder="Search..."
 					className="w-full bg-[#2c353d] text-white px-4 py-2 rounded focus:outline-none"
@@ -29,7 +29,7 @@ export default function ForumHeader() {
 				<img
 					src="/search-icon.svg"
 					className="w-5 h-5 absolute inset-y-0 right-3 m-auto pointer-events-none"
-				/>
+				/> */}
 			</div>
 			<div className="flex items-center gap-2">
 				{/* <img
