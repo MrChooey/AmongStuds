@@ -31,6 +31,7 @@ export default function CreatePost({ onPostCreated }) {
 				tags,
 				createdAt: serverTimestamp(),
 				likers: {},
+				dislikers: {},
 				likes: 0,
 				comments: [],
 				user_id: currentUser.uid,

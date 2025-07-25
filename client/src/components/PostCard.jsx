@@ -37,19 +37,30 @@ export default function PostCard({ post, disableLink = false, userRole = 0 }) {
 
 		await runTransaction(db, async (tx) => {
 			const snap = await tx.get(postRef);
-			const likers = snap.data().likers || {};
+			const data = snap.data();
+			const likers = data.likers || {};
+			const dislikers = data.dislikers || {};
 
-			if (likers[userId]) {
-				tx.update(postRef, {
-					[`likers.${userId}`]: false,
-					likes: increment(-1),
-				});
+			const updates = {};
+
+			const alreadyLiked = !!likers[userId];
+			const alreadyDisliked = !!dislikers[userId];
+
+			if (alreadyLiked) {
+				// Unlike
+				updates[`likers.${userId}`] = false;
+				updates.likes = increment(-1);
 			} else {
-				tx.update(postRef, {
-					[`likers.${userId}`]: true,
-					likes: increment(1),
-				});
+				// Like
+				updates[`likers.${userId}`] = true;
+				updates.likes = increment(1);
+
+				if (alreadyDisliked) {
+					updates[`dislikers.${userId}`] = false;
+				}
 			}
+
+			tx.update(postRef, updates);
 		});
 	};
 
@@ -57,8 +68,40 @@ export default function PostCard({ post, disableLink = false, userRole = 0 }) {
 		e.preventDefault();
 		e.stopPropagation();
 
+		const userId = auth.currentUser?.uid;
+		if (!userId) return;
+
 		const postRef = doc(db, "posts", post.id);
-		await updateDoc(postRef, { likes: increment(-1) });
+
+		await runTransaction(db, async (tx) => {
+			const snap = await tx.get(postRef);
+			const data = snap.data();
+			const dislikers = data.dislikers || {};
+			const likers = data.likers || {};
+
+			const alreadyDisliked = !!dislikers[userId];
+			const alreadyLiked = !!likers[userId];
+
+			const updates = {};
+
+			if (alreadyDisliked) {
+				// Undo dislike
+				updates[`dislikers.${userId}`] = false;
+			} else {
+				// Add dislike
+				updates[`dislikers.${userId}`] = true;
+
+				// Also undo like
+				if (alreadyLiked) {
+					updates[`likers.${userId}`] = false;
+					updates.likes = increment(-1);
+				}
+			}
+
+			if (Object.keys(updates).length > 0) {
+				tx.update(postRef, updates);
+			}
+		});
 	};
 
 	const handleReport = async (e) => {
@@ -94,6 +137,7 @@ export default function PostCard({ post, disableLink = false, userRole = 0 }) {
 
 	const userId = auth.currentUser?.uid;
 	const liked = !!(post.likers && userId && post.likers[userId]);
+	const disliked = !!(post.dislikers && userId && post.dislikers[userId]);
 	const isAdmin = userRole === 1;
 	const canDelete = isAdmin;
 
@@ -132,7 +176,7 @@ export default function PostCard({ post, disableLink = false, userRole = 0 }) {
 						onClick={handleDislike}
 						className="cursor-pointer px-2 py-1 rounded hover:bg-gray-700 duration-300"
 					>
-						👎 Dislike
+						{disliked ? "👎 Undo Dislike" : "👎 Dislike"}
 					</button>
 					{canDelete ? (
 						<button
