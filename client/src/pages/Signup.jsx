@@ -28,6 +28,7 @@ export default function Signup() {
 				email,
 				role: 0,
 				createdAt: new Date(),
+				status: "active",
 			});
 			setMessage("Account created! Awaiting admin approval.");
 		} catch (err) {
