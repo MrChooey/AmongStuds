@@ -291,6 +291,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 👥 Authors
 
 Ron Patrick Ramas - [MrChooey](https://github.com/MrChooey)
+Myk Erolf Roble - [mykroble](https://github.com/mykroble)
 
 ## 🙏 Acknowledgments
 
